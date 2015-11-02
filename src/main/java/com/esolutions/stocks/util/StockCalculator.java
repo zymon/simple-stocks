@@ -1,4 +1,4 @@
-package com.esolutions.stocks;
+package com.esolutions.stocks.util;
 
 import com.esolutions.stocks.model.Money;
 import com.esolutions.stocks.model.Stock;
@@ -55,7 +55,7 @@ public class StockCalculator {
             quantityPrices = quantityPrices.add(trade.getPrice().multiply(trade.getQuantity()));
         }
         if (quantities == 0) {
-            throw new IllegalArgumentException("Trades have no quantities");
+            throw new IllegalArgumentException("Zero quantities");
         }
         return quantityPrices.divide(quantities);
     }

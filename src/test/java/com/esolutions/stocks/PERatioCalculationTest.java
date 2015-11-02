@@ -1,6 +1,7 @@
 package com.esolutions.stocks;
 
 import com.esolutions.stocks.model.Money;
+import com.esolutions.stocks.util.StockCalculator;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

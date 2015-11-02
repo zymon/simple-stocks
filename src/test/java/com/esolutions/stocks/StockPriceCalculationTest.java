@@ -2,6 +2,7 @@ package com.esolutions.stocks;
 
 import com.esolutions.stocks.model.Money;
 import com.esolutions.stocks.model.Trade;
+import com.esolutions.stocks.util.StockCalculator;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ public class StockPriceCalculationTest {
         // when
         stockCalculator.calculateStockPrice(trades);
     }
-
 
     @Test
     public void shouldCalculateStockPrice() {

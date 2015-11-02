@@ -1,12 +1,14 @@
 package com.esolutions.stocks.model;
 
+import java.util.Date;
+
 /**
  * Created by Szymon on 02.11.2015.
  */
 public class Trade {
     private String stockSymbol;
     private int quantity;
-    private long timestamp;
+    private Date timestamp;
     private TradeIndicator indicator;
     private Money price;
 
@@ -22,7 +24,7 @@ public class Trade {
         return quantity;
     }
 
-    public long getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
@@ -38,7 +40,7 @@ public class Trade {
         this.quantity = quantity;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -53,7 +55,7 @@ public class Trade {
     public static class Builder implements com.esolutions.stocks.model.Builder<Trade> {
         private String stockSymbol;
         private int quantity;
-        private long timestamp;
+        private Date timestamp;
         private TradeIndicator indicator;
         private Money price;
 
@@ -67,7 +69,7 @@ public class Trade {
             return this;
         }
 
-        public Builder withTimestamp(long timestamp) {
+        public Builder withTimestamp(Date timestamp) {
             this.timestamp = timestamp;
             return this;
         }

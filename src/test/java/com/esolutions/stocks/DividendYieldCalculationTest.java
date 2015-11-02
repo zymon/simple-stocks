@@ -3,6 +3,7 @@ package com.esolutions.stocks;
 import com.esolutions.stocks.model.Money;
 import com.esolutions.stocks.model.Stock;
 import com.esolutions.stocks.model.StockType;
+import com.esolutions.stocks.util.StockCalculator;
 import org.junit.Before;
 import org.junit.Test;
 

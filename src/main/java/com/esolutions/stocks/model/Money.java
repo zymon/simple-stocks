@@ -10,6 +10,8 @@ import static java.util.Objects.requireNonNull;
  */
 public class Money implements Comparable<Money> {
     private static MathContext CALCULATION_CONTEXT = MathContext.DECIMAL64;
+    private static int SCALE_INT = 2;
+    private static BigDecimal SCALE_MULTIPLICATION = new BigDecimal(Math.pow(10, SCALE_INT));
     public static Money ZERO = new Money(0);
 
     private BigDecimal value;
@@ -23,7 +25,7 @@ public class Money implements Comparable<Money> {
     }
 
     private BigDecimal normalizeScale(BigDecimal amount) {
-        return amount.setScale(2, CALCULATION_CONTEXT.getRoundingMode());
+        return amount.setScale(SCALE_INT, CALCULATION_CONTEXT.getRoundingMode());
     }
 
     @Override
@@ -64,6 +66,12 @@ public class Money implements Comparable<Money> {
         return this.value.doubleValue();
     }
 
+
+    public long toExactLong() {
+        BigDecimal multiply = this.value.multiply(SCALE_MULTIPLICATION, CALCULATION_CONTEXT);
+        return multiply.setScale(0, CALCULATION_CONTEXT.getRoundingMode()).longValueExact();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,5 +94,9 @@ public class Money implements Comparable<Money> {
         return "Money{" +
                 "value=" + value +
                 '}';
+    }
+
+    public static Money fromExactLong(long tradePrice) {
+        return new Money(BigDecimal.valueOf(tradePrice).divide(SCALE_MULTIPLICATION));
     }
 }
