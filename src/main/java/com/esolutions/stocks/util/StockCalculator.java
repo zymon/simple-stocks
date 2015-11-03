@@ -4,8 +4,10 @@ import com.esolutions.stocks.model.Money;
 import com.esolutions.stocks.model.Stock;
 import com.esolutions.stocks.model.StockType;
 import com.esolutions.stocks.model.Trade;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Collection;
+import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
@@ -59,4 +61,13 @@ public class StockCalculator {
         }
         return quantityPrices.divide(quantities);
     }
+
+    public double calculateGeometricMean(List<Double> prices) {
+        if (CollectionUtils.isEmpty(prices)) {
+            throw new IllegalArgumentException("No prices to calculate geometric mean");
+        }
+        double product = prices.stream().reduce((price, accumulator) -> accumulator *= price).get();
+        return Math.pow(product, 1.0/prices.size());
+    }
+
 }

@@ -1,9 +1,21 @@
 package com.esolutions.stocks.service;
 
+import com.esolutions.stocks.dao.InMemoryStockDao;
+import com.esolutions.stocks.dao.InMemoryTradeDao;
+import com.esolutions.stocks.dao.StockDao;
+import com.esolutions.stocks.dao.TradeDao;
+import com.esolutions.stocks.mapper.TradeMapper;
 import com.esolutions.stocks.model.Money;
 import com.esolutions.stocks.model.Trade;
 import com.esolutions.stocks.model.TradeIndicator;
+import com.esolutions.stocks.util.StockCalculator;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -15,8 +27,23 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SimpleTradeServiceTest {
+    @Mock
+    private TradeDao tradeDao;
+    @Mock
+    private TradeMapper tradeMapper;
+    @Mock
+    private StockDao stockDao;
+    @Mock
+    private StockCalculator stockCalculator;
+
+    @InjectMocks
     private TradeService tradeService = new SimpleTradeService();
+
+    @Before public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
 
     @Test(expected = NullPointerException.class)
@@ -120,6 +147,18 @@ public class SimpleTradeServiceTest {
 
         Collection<Trade> aleTrades = trades.get(aleStock);
         assertThat(aleTrades, nullValue());
+    }
+
+
+    @Test
+    public void shouldCalculateGBCEAllShareIndex() {
+        // given
+
+
+        // when
+//        tradeService.calculateGBCEAllShareIndex();
+
+        // then
     }
 
     private Date shiftDate(LocalDateTime now, int minusMinutes) {
