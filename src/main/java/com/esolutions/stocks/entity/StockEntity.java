@@ -1,10 +1,9 @@
 package com.esolutions.stocks.entity;
 
-/**
- * Created by slubieni on 11/3/15.
- */
 public class StockEntity {
-
+    /**
+     * Stock symbol
+     */
     private String symbol;
 
     public StockEntity(String stockSymbol) {

@@ -10,7 +10,7 @@ import org.hamcrest.TypeSafeMatcher;
 import java.util.Date;
 
 /**
- * Created by slubieni on 11/4/15.
+ * Custom matchers for Trade class.
  */
 public class TradeMatcher {
 

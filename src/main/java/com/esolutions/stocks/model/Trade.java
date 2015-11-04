@@ -3,13 +3,28 @@ package com.esolutions.stocks.model;
 import java.util.Date;
 
 /**
- * Created by Szymon on 02.11.2015.
+ * Trade model.
  */
 public class Trade {
+    /**
+     * Stock symbol.
+     */
     private String stockSymbol;
+    /**
+     * Quantity of stock.
+     */
     private int quantity;
+    /**
+     * Trade timestamp.
+     */
     private Date timestamp;
+    /**
+     * Trade indicator (buy, sell).
+     */
     private TradeIndicator indicator;
+    /**
+     * Trade price.
+     */
     private Money price;
 
     public Trade(String stockSymbol) {
@@ -52,6 +67,9 @@ public class Trade {
         this.price = price;
     }
 
+    /**
+     * Utility Trade builder class.
+     */
     public static class Builder implements com.esolutions.stocks.model.Builder<Trade> {
         private String stockSymbol;
         private int quantity;

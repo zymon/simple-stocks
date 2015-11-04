@@ -7,9 +7,6 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-/**
- * Created by Szymon on 02.11.2015.
- */
 public class PERatioCalculationTest {
 
     private StockCalculator stockCalculator = new StockCalculator();

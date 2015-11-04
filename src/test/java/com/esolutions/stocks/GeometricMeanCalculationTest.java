@@ -9,9 +9,6 @@ import java.util.Arrays;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-/**
- * Created by slubieni on 11/2/15.
- */
 public class GeometricMeanCalculationTest {
 
     private StockCalculator stockCalculator = new StockCalculator();

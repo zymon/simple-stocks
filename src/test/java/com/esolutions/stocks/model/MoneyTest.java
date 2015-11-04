@@ -7,11 +7,8 @@ import java.math.RoundingMode;
 
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
-/**
- * Created by slubieni on 11/4/15.
- */
 public class MoneyTest {
 
     @Test
@@ -202,7 +199,6 @@ public class MoneyTest {
 
         // when
         final Money money = Money.fromExactLong(exactLong);
-
 
         // then
         assertThat(money, comparesEqualTo(new Money(149.23)));

@@ -11,9 +11,6 @@ import java.util.Collection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
 
-/**
- * Created by Szymon on 02.11.2015.
- */
 public class StockPriceCalculationTest {
 
     private StockCalculator stockCalculator = new StockCalculator();

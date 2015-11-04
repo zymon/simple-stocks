@@ -1,13 +1,28 @@
 package com.esolutions.stocks.model;
 
 /**
- * Created by Szymon on 01.11.2015.
+ * Stock model.
  */
 public class Stock {
+    /**
+     * Stock symbol.
+     */
     private String symbol;
+    /**
+     * Type of stock (common, preferred).
+     */
     private StockType type;
+    /**
+     * Amount of last dividend.
+     */
     private Money lastDividend;
+    /**
+     * Value of fixed dividend.
+     */
     private double fixedDividend;
+    /**
+     * Amount of par value.
+     */
     private Money parValue;
 
 
@@ -51,6 +66,9 @@ public class Stock {
         this.parValue = parValue;
     }
 
+    /**
+     * Utility Stock builder class.
+     */
     public static class Builder implements com.esolutions.stocks.model.Builder<Stock>{
         private String symbol;
         private StockType stockType;

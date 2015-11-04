@@ -3,7 +3,9 @@ package com.esolutions.stocks.mapper;
 import java.util.function.Function;
 
 /**
- * Created by slubieni on 11/2/15.
+ * Generic mapper interface.
+ * @param <T> source class
+ * @param <R> target class
  */
 public interface Mapper<T, R> extends Function<T,R> {
 }

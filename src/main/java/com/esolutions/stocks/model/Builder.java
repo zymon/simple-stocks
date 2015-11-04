@@ -1,7 +1,7 @@
 package com.esolutions.stocks.model;
 
 /**
- * Created by Szymon on 01.11.2015.
+ * Generic builder interface.
  */
 public interface Builder<T> {
     T build();

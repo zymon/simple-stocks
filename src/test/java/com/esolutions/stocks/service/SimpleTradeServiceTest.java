@@ -18,13 +18,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static com.esolutions.stocks.matcher.TradeMatcher.*;
-import static java.util.Date.from;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -48,7 +44,6 @@ public class SimpleTradeServiceTest {
         tradeService.setTradeMapper(new TradeMapper());
         tradeService.setStockCalculator(new StockCalculator());
     }
-
 
     @Test(expected = NullPointerException.class)
     public void shouldTrowExceptionOnNullStockSymbol() {
@@ -118,33 +113,44 @@ public class SimpleTradeServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnNegativeCollectionInterval() {
-        tradeService.collectTrades(new ArrayList<>(Arrays.asList("ABC")), -1);
+        tradeService.collectTrades(Arrays.asList("ABC"), -1);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldThrowExceptionWhenNoTradesFoundForGBCEAllShareIndex() {
+        // given
+        Collection<StockEntity> stocks = Arrays.asList(new StockEntity("TEA"));
+
+        when(stockDao.getStocks()).thenReturn(stocks);
+
+        // when
+        tradeService.calculateGBCEAllShareIndex(123);
     }
 
     @Test
-    public void shouldCollectTradesForLast15Minutes() {
+    public void shouldCollectTrades() {
         // given
         String teaStock = "TEA";
         String popStock = "POP";
         String aleStock = "ALE";
 
-        List<String> stockSymbols = new ArrayList<>(Arrays.asList(teaStock, popStock, aleStock));
+        List<String> stockSymbols = Arrays.asList(teaStock, popStock, aleStock);
 
-        LocalDateTime now = LocalDateTime.now();
         int fromTimestamp = 1521342;
 
-        Date teaTradeDate = shiftDate(now, 0);
-        Date popTradeDate = shiftDate(now, 1);
+        Date teaTradeDate = new Date();
+        Date popTradeDate = new Date();
 
         int teaQuantity = 68;
         int popQuantity = 125;
+
         long teaTradePriceInLong = 115;
         long popTradePriceInLong = 76;
 
-        Collection<TradeEntity> tradeEntities = new ArrayList<>(Arrays.asList(
+        Collection<TradeEntity> tradeEntities = Arrays.asList(
                 new TradeEntity(teaStock, teaTradeDate.getTime(), teaQuantity, TradeIndicator.SELL.name(), teaTradePriceInLong),
                 new TradeEntity(popStock, popTradeDate.getTime(), popQuantity, TradeIndicator.BUY.name(), popTradePriceInLong)
-        ));
+        );
 
         when(tradeDao.getTrades(anyList(), anyLong())).thenReturn(tradeEntities);
 
@@ -181,21 +187,6 @@ public class SimpleTradeServiceTest {
         assertThat(aleTrades, nullValue());
     }
 
-
-    @Test(expected = IllegalStateException.class)
-    public void shouldThrowExceptionWhenNoTradesFoundForGBCEAllShareIndex() {
-        // given
-        Collection<StockEntity> stocks = new ArrayList<>(Arrays.asList(
-                new StockEntity("TEA")
-        ));
-
-        when(stockDao.getStocks()).thenReturn(stocks);
-
-        // when
-        tradeService.calculateGBCEAllShareIndex(123);
-    }
-
-
     @Test
     public void shouldCalculateGBCEAllShareIndex() {
         // given
@@ -204,16 +195,12 @@ public class SimpleTradeServiceTest {
         final String teaSymbol = "TEA";
         final String popSymbol = "POP";
         final String aleSymbol = "ALE";
-        Collection<StockEntity> stocks = new ArrayList<>(Arrays.asList(
-                new StockEntity(teaSymbol),
-                new StockEntity(popSymbol),
-                new StockEntity(aleSymbol)
-        ));
-        Collection<TradeEntity> trades = new ArrayList<>(Arrays.asList(
+        Collection<StockEntity> stocks = Arrays.asList(new StockEntity(teaSymbol), new StockEntity(popSymbol), new StockEntity(aleSymbol));
+        Collection<TradeEntity> trades = Arrays.asList(
                 new TradeEntity(teaSymbol, 4, 10, TradeIndicator.BUY.name(), 105),
                 new TradeEntity(teaSymbol, 2, 87, TradeIndicator.BUY.name(), 95),
                 new TradeEntity(popSymbol, 3, 123, TradeIndicator.SELL.name(), 136)
-        ));
+        );
 
         when(stockDao.getStocks()).thenReturn(stocks);
         when(tradeDao.getTrades(anyList(), anyLong())).thenReturn(trades);
@@ -224,10 +211,6 @@ public class SimpleTradeServiceTest {
         // then
         verify(stockDao).getStocks();
         assertThat(gbceAllShareIndex, closeTo(1.142d, 0.001d));
-    }
-
-    private Date shiftDate(LocalDateTime now, int minusMinutes) {
-        return from(now.minus(minusMinutes, ChronoUnit.MINUTES).atZone(ZoneId.systemDefault()).toInstant());
     }
 
 }

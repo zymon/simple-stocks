@@ -1,15 +1,28 @@
 package com.esolutions.stocks.entity;
 
-/**
- * Created by slubieni on 11/2/15.
- */
 public class TradeEntity {
 
+    /**
+     * Stock symbol.
+     */
     private String stockSymbol;
+    /**
+     * Trade timestamp.
+     */
     private long timestamp;
+    /**
+     * Quantity of stock.
+     */
     private int quantity;
+    /**
+     * Trade indicator (buy, sell).
+     */
     private String tradeIndicator;
-    long tradePrice;
+    /**
+     * Trade price represented as long. <br/>
+     * e.g. 1,23 is represented as 123.
+     */
+    private long tradePrice;
 
     public TradeEntity(String stockSymbol, long timestamp, int quantity, String tradeIndicator, long tradePrice) {
         this.stockSymbol = stockSymbol;

@@ -11,9 +11,6 @@ import static com.esolutions.stocks.model.StockType.PREFERRED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
 
-/**
- * Created by Szymon on 01.11.2015.
- */
 public class DividendYieldCalculationTest {
     private StockCalculator stockCalculator = new StockCalculator();
     private Stock teaStock;

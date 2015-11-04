@@ -13,10 +13,18 @@ import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
 /**
- * Created by Szymon on 01.11.2015.
+ * Utility methods for stock calculations.
  */
 public class StockCalculator {
 
+    /**
+     * Calculate dividend yield. <br/>
+     * For 'common' stock = last dividend / ticker price. <br/>
+     * For 'preferred' stock = (fixed dividend * par value) / ticker price.
+     * @param stock stock for which the dividend will be calculated
+     * @param tickerPrice ticker price
+     * @return dividend money amount
+     */
     public Money calculateDividendYield(Stock stock, Money tickerPrice) {
         requireNonNull(stock, "Missing stock");
         requireNonNull(tickerPrice, "Invalid tickerPrice");
@@ -36,6 +44,12 @@ public class StockCalculator {
         return result;
     }
 
+    /**
+     * Calculate P/E Ratio = ticker price / dividend
+     * @param tickerPrice ticker price
+     * @param dividend dividend
+     * @return ratio value as double
+     */
     public double calculatePERatio(Money tickerPrice, Money dividend) {
         requireNonNull(tickerPrice, "Invalid tickerPrice");
         requireNonNull(dividend, "Invalid dividend");
@@ -46,6 +60,11 @@ public class StockCalculator {
         return tickerPrice.divide(dividend).toDouble();
     }
 
+    /**
+     * Calculate stock price = [Sum of (trade price * stock quantity)] / Sum of stock quantities.
+     * @param trades trades of one stock.
+     * @return stock price
+     */
     public Money calculateStockPrice(Collection<Trade> trades) {
         if (trades == null || trades.isEmpty()) {
             throw new IllegalArgumentException("No trades to calculate price");
@@ -62,6 +81,11 @@ public class StockCalculator {
         return quantityPrices.divide(quantities);
     }
 
+    /**
+     * Calculate geometric mean of given prices. (n-th root of n-elements multiplication).
+     * @param prices prices
+     * @return geometric mean as double value
+     */
     public double calculateGeometricMean(List<Double> prices) {
         if (CollectionUtils.isEmpty(prices)) {
             throw new IllegalArgumentException("No prices to calculate geometric mean");

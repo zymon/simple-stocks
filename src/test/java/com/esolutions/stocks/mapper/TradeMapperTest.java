@@ -11,9 +11,6 @@ import java.util.Date;
 import static com.esolutions.stocks.matcher.TradeMatcher.*;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by slubieni on 11/4/15.
- */
 public class TradeMapperTest {
 
     private TradeMapper tradeMapper = new TradeMapper();
@@ -38,5 +35,4 @@ public class TradeMapperTest {
         assertThat(trade, hasTradeIndicator(TradeIndicator.SELL));
         assertThat(trade, hasPrice(Money.fromExactLong(teaTradePriceInLong)));
     }
-
 }

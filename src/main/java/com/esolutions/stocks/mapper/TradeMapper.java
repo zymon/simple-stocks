@@ -8,7 +8,7 @@ import com.esolutions.stocks.model.TradeIndicator;
 import java.util.Date;
 
 /**
- * Created by slubieni on 11/2/15.
+ * TradeEntity to Trade mapper.
  */
 public class TradeMapper implements Mapper<TradeEntity, Trade> {
 
