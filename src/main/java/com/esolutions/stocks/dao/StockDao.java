@@ -9,7 +9,6 @@ import java.util.Collection;
  */
 public interface StockDao {
 
-    StockEntity save(String stockSymbol);
-    Collection<StockEntity> collectAllStocks();
+    Collection<StockEntity> getStocks();
 
 }

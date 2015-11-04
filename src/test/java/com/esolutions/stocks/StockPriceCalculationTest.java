@@ -25,7 +25,7 @@ public class StockPriceCalculationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenNoTrades() {
-        stockCalculator.calculateStockPrice(new ArrayList<Trade>());
+        stockCalculator.calculateStockPrice(new ArrayList<>());
     }
 
     @Test(expected = IllegalArgumentException.class)

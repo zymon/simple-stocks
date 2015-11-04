@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public interface TradeService {
     Trade recordTrade(String stockSymbol, Date timestamp, int quantity, TradeIndicator tradeIndicator, Money price);
-    Map<String, List<Trade>> collectTrades(List<String> stockSymbols, long currentTimestamp, int collectionPeriodInMinutes );
-    double calculateGBCEAllShareIndex(long currentTimestamp, int collectionPeriodInMinutes);
+    Map<String, List<Trade>> collectTrades(List<String> stockSymbols, long fromTimestamp);
+    Map<String, List<Trade>> collectTradesForLast15Min(List<String> stockSymbols);
+    double calculateGBCEAllShareIndex(long fromTimestamp);
 }

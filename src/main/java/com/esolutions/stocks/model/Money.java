@@ -66,6 +66,9 @@ public class Money implements Comparable<Money> {
         return this.value.doubleValue();
     }
 
+    public BigDecimal toBigDecimal() {
+        return this.value;
+    }
 
     public long toExactLong() {
         BigDecimal multiply = this.value.multiply(SCALE_MULTIPLICATION, CALCULATION_CONTEXT);

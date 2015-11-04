@@ -11,5 +11,5 @@ import java.util.List;
 public interface TradeDao {
     TradeEntity save(String stockSymbol, long timestampTime, int quantity, String tradeIndicator, long tradePrice);
 
-    Collection<TradeEntity> collectTrades(List<String> stockSymbols, long startingTimestamp);
+    Collection<TradeEntity> getTrades(List<String> stockSymbols, long fromTimestamp);
 }

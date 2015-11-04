@@ -1,7 +1,5 @@
 package com.esolutions.stocks.service;
 
-import com.esolutions.stocks.dao.InMemoryStockDao;
-import com.esolutions.stocks.dao.InMemoryTradeDao;
 import com.esolutions.stocks.dao.StockDao;
 import com.esolutions.stocks.dao.TradeDao;
 import com.esolutions.stocks.entity.StockEntity;
@@ -14,8 +12,9 @@ import com.esolutions.stocks.util.StockCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
@@ -24,10 +23,7 @@ import static java.util.Objects.requireNonNull;
  * Created by slubieni on 11/2/15.
  */
 public class SimpleTradeService implements TradeService {
-    private static final int MAX_COLLECTION_INTERVAL = 60;
-
-    private static final long MILLISECONDS_IN_MINUTE = 60*1000;
-
+    private static final long IN_MILLIS_15_MIN = 15 * 60 * 1000;
     private TradeDao tradeDao;
     private TradeMapper tradeMapper;
     private StockDao stockDao;
@@ -49,33 +45,35 @@ public class SimpleTradeService implements TradeService {
     }
 
     @Override
-    public Map<String, List<Trade>> collectTrades(List<String> stockSymbols, long currentTimestamp, int collectionPeriodInMinutes) {
+    public Map<String, List<Trade>> collectTrades(List<String> stockSymbols, long fromTimestamp) {
         if (CollectionUtils.isEmpty(stockSymbols)) {
             throw new IllegalArgumentException("No stock symbols");
         }
 
-        if (collectionPeriodInMinutes < 0 || collectionPeriodInMinutes > MAX_COLLECTION_INTERVAL) {
-            throw new IllegalArgumentException("Invalid collection period. Must be in range [0;" + MAX_COLLECTION_INTERVAL + "]");
+        if (fromTimestamp < 0) {
+            throw new IllegalArgumentException("Invalid collection period. Must be greater than zero");
         }
 
-        Collection<TradeEntity> trades = tradeDao.collectTrades(stockSymbols, currentTimestamp - collectionPeriodInMinutes * MILLISECONDS_IN_MINUTE);
-
+        Collection<TradeEntity> trades = tradeDao.getTrades(stockSymbols, fromTimestamp);
         return trades.stream().map(tradeMapper).collect(Collectors.groupingBy(Trade::getStockSymbol));
     }
 
-    /**
-     *
-     * @param currentTimestamp
-     * @param collectionPeriodInMinutes
-     * @return
-     * TODO: what is there was no trade for a stock during given collection period?
-     */
     @Override
-    public double calculateGBCEAllShareIndex(long currentTimestamp, int collectionPeriodInMinutes) {
-        Collection<StockEntity> stockEntities = stockDao.collectAllStocks();
-        Map<String, List<Trade>> trades = collectTrades(stockEntities.stream().map(stockEntity -> stockEntity.getSymbol()).collect(Collectors.toList()), currentTimestamp, collectionPeriodInMinutes);
+    public Map<String, List<Trade>> collectTradesForLast15Min(List<String> stockSymbols) {
+        return collectTrades(stockSymbols, getCurrentTimestamp() - IN_MILLIS_15_MIN);
+    }
+
+    private long getCurrentTimestamp() {
+        LocalDateTime now = LocalDateTime.now();
+        return now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    @Override
+    public double calculateGBCEAllShareIndex(long fromTimestamp) {
+        Collection<StockEntity> stockEntities = stockDao.getStocks();
+        Map<String, List<Trade>> trades = collectTrades(stockEntities.stream().map(stockEntity -> stockEntity.getSymbol()).collect(Collectors.toList()), fromTimestamp);
         if (MapUtils.isEmpty(trades)) {
-            throw new IllegalStateException("No trades recorded in given collection period of " + collectionPeriodInMinutes + " minutes");
+            throw new IllegalStateException("No trades recorded from timestamp: " + fromTimestamp);
         }
 
         List<Double> prices = new ArrayList<>(trades.size());
